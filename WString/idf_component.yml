@@ -1,0 +1,7 @@
+name: WString
+version: "1.0.0"
+description: Arduino String Cpp Class component for ESP-IDF
+url: https://github.com/sachin42/idfcomponents/tree/master/WString
+repository: https://github.com/sachin42/idfcomponents.git
+dependencies:
+  idf: ">=5.0"
