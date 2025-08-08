@@ -1,0 +1,9 @@
+name: "Blynk"
+version: "1.0.0"
+license: "MIT"
+description: Blynk IOT for ESP-IDF (tested with only legecy server)
+url: https://github.com/sachin42/idfcomponents/tree/master/Blynk
+repository: https://github.com/sachin42/idfcomponents.git
+dependencies:
+  idf: ">=5.0"
+  sachin42/print: "^1"

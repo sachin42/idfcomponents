@@ -1,0 +1,9 @@
+name: "StreamString"
+version: "1.0.0"
+license: "MIT"
+description: Arduino StreamString Cpp Class component for ESP-IDF
+url: https://github.com/sachin42/idfcomponents/tree/master/StreamString
+repository: https://github.com/sachin42/idfcomponents.git
+dependencies:
+  idf: ">=5.0"
+  sachin42/stream: "^1"

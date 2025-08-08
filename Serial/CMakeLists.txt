@@ -10,6 +10,5 @@ idf_component_register(
         esp_common
         freertos
         log
-        Stream
-        WString
+        stream
 )
