@@ -1,0 +1,9 @@
+name: "HTTPClient"
+version: "1.0.1"
+license: "MIT"
+description: Arduino like HTTPClient Cpp Class component for ESP-IDF
+url: https://github.com/sachin42/idfcomponents/tree/master/HTTPClient
+repository: https://github.com/sachin42/idfcomponents.git
+dependencies:
+  idf: ">=5.0"
+  sachin42/streamstring: "^1"

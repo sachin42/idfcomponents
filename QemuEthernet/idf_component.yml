@@ -1,0 +1,8 @@
+dependencies:
+  idf: '>=5.0'
+  sachin42/wstring: ^1
+description: Qemu Ethernet Cpp Class component for ESP-IDF
+license: MIT
+repository: https://github.com/sachin42/idfcomponents.git
+url: https://github.com/sachin42/idfcomponents/tree/master/QemuEthernet
+version: 1.0.2

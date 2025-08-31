@@ -1,0 +1,8 @@
+dependencies:
+  idf: '>=5.0'
+  sachin42/wstring: ^1
+description: Wifi Cpp Class component for ESP-IDF with optional Provisionig
+license: MIT
+repository: https://github.com/sachin42/idfcomponents.git
+url: https://github.com/sachin42/idfcomponents/tree/master/WiFi
+version: 1.0.3

@@ -1,0 +1,14 @@
+idf_component_register(
+    SRCS 
+        "WiFi.cpp"
+    INCLUDE_DIRS 
+        "include"
+    REQUIRES
+	log
+	lwip
+	esp_wifi
+	esp_common
+	esp_event
+	wifi_provisioning
+	freertos
+)
