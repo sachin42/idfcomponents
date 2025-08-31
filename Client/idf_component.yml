@@ -1,0 +1,9 @@
+name: "Client"
+version: "1.0.1"
+license: "MIT"
+description: Arduino Client Cpp Class component for ESP-IDF
+url: https://github.com/sachin42/idfcomponents/tree/master/Client
+repository: https://github.com/sachin42/idfcomponents.git
+dependencies:
+  idf: ">=5.0"
+  sachin42/ipaddress: "^1"

@@ -1,0 +1,5 @@
+**/dist/
+Network/
+NetworkClient/
+espressif__esp_lcd_touch_cst328/
+espressif__esp_lvgl_port/
