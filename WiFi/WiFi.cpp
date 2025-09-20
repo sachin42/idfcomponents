@@ -140,9 +140,13 @@ void WiFiManager::initEventLoop()
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     wifi_event_group = xEventGroupCreate();
 }
-
+#if CONFIG_USE_BLE_PROVISION
+void WiFiManager::begin()
+{
+#else
 void WiFiManager::begin(const char *ssid , const char *pass )
 {
+#endif
     esp_log_level_set(TAG, ESP_LOG_WARN);
     esp_log_level_set("phy_init", ESP_LOG_WARN);
     esp_log_level_set("wifi_init", ESP_LOG_WARN);
@@ -255,7 +259,17 @@ String WiFiManager::getServiceName(size_t max, const String &prefix)
 {
     uint8_t mac[6];
     esp_wifi_get_mac(WIFI_IF_STA, mac);
-    char name[max];
-    snprintf(name, max, "%s%02X%02X%02X", prefix.c_str(), mac[3], mac[4], mac[5]);
-    return String(name);
+
+    char buf[16]; // Enough for 3 bytes * 2 chars = 6 hex chars + \0
+    snprintf(buf, sizeof(buf), "%02X%02X%02X", mac[3], mac[4], mac[5]);
+
+    String name = prefix + String(buf);
+    name.toUpperCase();
+
+    if (name.length() >= max) {
+        name = name.substring(0, max - 1);
+    }
+
+    return name;
 }
+

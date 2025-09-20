@@ -12,8 +12,11 @@ class WiFiManager
 public:
     WiFiManager() = default;
     ~WiFiManager() = default;
-
-    void begin(const char * ssid = nullptr, const char * pass = nullptr);
+#if CONFIG_USE_BLE_PROVISION
+    void begin();
+#else
+    void begin(const char *ssid = nullptr, const char *pass = nullptr);
+#endif
     void reset();
     bool isConnected() const;
     String getServiceName(size_t max, const String &prefix);
