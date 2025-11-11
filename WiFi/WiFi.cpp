@@ -21,8 +21,43 @@ void WiFiManager::eventHandler(void *arg,
                                int32_t event_id,
                                void *event_data)
 {
+#if CONFIG_USE_BLE_PROVISION
     static int retries;
-    if (event_base == WIFI_PROV_EVENT)
+#endif
+    if (event_base == WIFI_EVENT)
+    {
+        switch (event_id)
+        {
+        case WIFI_EVENT_STA_START:
+            esp_wifi_connect();
+            break;
+        case WIFI_EVENT_STA_DISCONNECTED:
+            ESP_LOGI(TAG, "Disconnected. Connecting to the AP again...");
+            xEventGroupClearBits(wifi_event_group, WIFI_CONNECTED_EVENT);
+            ipAddress.clear();
+            netmask.clear();
+            gateway.clear();
+            esp_wifi_connect();
+            break;
+        default:
+            break;
+        }
+    }
+    else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP)
+    {
+        auto *event = static_cast<ip_event_got_ip_t *>(event_data);
+        ipAddress = String(ip4addr_ntoa((const ip4_addr_t *)&event->ip_info.ip));
+        netmask = String(ip4addr_ntoa((const ip4_addr_t *)&event->ip_info.netmask));
+        gateway = String(ip4addr_ntoa((const ip4_addr_t *)&event->ip_info.gw));
+
+        ESP_LOGW(TAG, "Got IP: %s, Mask: %s, Gateway: %s",
+                 ipAddress.c_str(),
+                 netmask.c_str(),
+                 gateway.c_str());
+        xEventGroupSetBits(wifi_event_group, WIFI_CONNECTED_EVENT);
+    }
+#if CONFIG_USE_BLE_PROVISION
+    else if (event_base == WIFI_PROV_EVENT)
     {
         switch (event_id)
         {
@@ -65,38 +100,6 @@ void WiFiManager::eventHandler(void *arg,
             break;
         }
     }
-    else if (event_base == WIFI_EVENT)
-    {
-        switch (event_id)
-        {
-        case WIFI_EVENT_STA_START:
-            esp_wifi_connect();
-            break;
-        case WIFI_EVENT_STA_DISCONNECTED:
-            ESP_LOGI(TAG, "Disconnected. Connecting to the AP again...");
-            xEventGroupClearBits(wifi_event_group, WIFI_CONNECTED_EVENT);
-            ipAddress.clear();
-            netmask.clear();
-            gateway.clear();
-            esp_wifi_connect();
-            break;
-        default:
-            break;
-        }
-    }
-    else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP)
-    {
-        auto *event = static_cast<ip_event_got_ip_t *>(event_data);
-        ipAddress = String(ip4addr_ntoa((const ip4_addr_t *)&event->ip_info.ip));
-        netmask = String(ip4addr_ntoa((const ip4_addr_t *)&event->ip_info.netmask));
-        gateway = String(ip4addr_ntoa((const ip4_addr_t *)&event->ip_info.gw));
-
-        ESP_LOGW(TAG, "Got IP: %s, Mask: %s, Gateway: %s",
-                 ipAddress.c_str(),
-                 netmask.c_str(),
-                 gateway.c_str());
-        xEventGroupSetBits(wifi_event_group, WIFI_CONNECTED_EVENT);
-    }
     else if (event_base == PROTOCOMM_TRANSPORT_BLE_EVENT)
     {
         switch (event_id)
@@ -128,6 +131,7 @@ void WiFiManager::eventHandler(void *arg,
             break;
         }
     }
+#endif
 }
 
 void WiFiManager::initNetif()
@@ -144,7 +148,7 @@ void WiFiManager::initEventLoop()
 void WiFiManager::begin()
 {
 #else
-void WiFiManager::begin(const char *ssid , const char *pass )
+void WiFiManager::begin(const char *ssid, const char *pass)
 {
 #endif
     esp_log_level_set(TAG, ESP_LOG_WARN);
@@ -266,10 +270,10 @@ String WiFiManager::getServiceName(size_t max, const String &prefix)
     String name = prefix + String(buf);
     name.toUpperCase();
 
-    if (name.length() >= max) {
+    if (name.length() >= max)
+    {
         name = name.substring(0, max - 1);
     }
 
     return name;
 }
-
