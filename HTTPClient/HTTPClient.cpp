@@ -820,7 +820,7 @@ String HTTPClient::errorToString(int error)
 void HTTPClient::addHeader(const String &name, const String &value, bool first, bool replace)
 {
     // not allow set of Header handled by code
-    if (!name.equalsIgnoreCase(F("Connection")) && !name.equalsIgnoreCase(F("User-Agent")) && !name.equalsIgnoreCase(F("Accept-Encoding")) && !name.equalsIgnoreCase(F("Host")) && !(name.equalsIgnoreCase(F("Authorization"))))
+    if (!name.equalsIgnoreCase(F("Connection")) && !name.equalsIgnoreCase(F("User-Agent")) && !name.equalsIgnoreCase(F("Accept-Encoding")) && !name.equalsIgnoreCase(F("Host")))
     {
         if (replace)
         {
