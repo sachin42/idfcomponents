@@ -14,7 +14,7 @@
 
 void BlynkDelay(millis_time_t ms)
 {
-    return vTaskDelay(pdMS_TO_TICKS(ms));
+    vTaskDelay(pdMS_TO_TICKS(ms));
 }
 
 
@@ -22,7 +22,6 @@ void BlynkDelay(millis_time_t ms)
 millis_time_t BlynkMillis()
 {
     return (uint32_t)(esp_timer_get_time() / 1000);
-    ;
 }
 
 

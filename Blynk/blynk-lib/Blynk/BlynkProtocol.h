@@ -17,6 +17,7 @@
 #include <Blynk/BlynkProtocolDefs.h>
 #include <Blynk/BlynkApi.h>
 #include <Blynk/BlynkUtility.h>
+#include <Blynk/BlynkThreadSafe.h>
 
 
 
@@ -51,6 +52,7 @@ public:
     bool isTokenInvalid() const { return state == TOKEN_INVALID; }
 
     bool connect(uint32_t timeout = BLYNK_TIMEOUT_MS*3) {
+        BLYNK_API_GUARD();
         conn.disconnect();
         state = CONNECTING;
         millis_time_t started = BlynkMillis();
@@ -63,6 +65,7 @@ public:
     }
 
     void disconnect() {
+        BLYNK_API_GUARD();
         conn.disconnect();
         state = DISCONNECTED;
         BLYNK_LOG1(BLYNK_F("Disconnected"));
@@ -72,6 +75,7 @@ public:
 
     // TODO: Fixme
     void startSession() {
+        BLYNK_API_GUARD();
         conn.connect();
         state = CONNECTING;
         msgIdOut = 0;
@@ -147,6 +151,7 @@ protected:
 template <class Transp>
 bool BlynkProtocol<Transp>::run(bool avail)
 {
+    BLYNK_API_GUARD();
     BLYNK_RUN_YIELD();
 
     if (state == DISCONNECTED) {
@@ -444,6 +449,7 @@ int BlynkProtocol<Transp>::readHeader(BlynkHeader& hdr)
 template <class Transp>
 void BlynkProtocol<Transp>::sendCmd(uint8_t cmd, uint16_t id, const void* data, size_t length, const void* data2, size_t length2)
 {
+    BLYNK_API_GUARD();
     if (!conn.connected() || (cmd != BLYNK_CMD_RESPONSE && cmd != BLYNK_CMD_PING && cmd != BLYNK_CMD_LOGIN && cmd != BLYNK_CMD_HW_LOGIN && state != CONNECTED) ) {
 #ifdef BLYNK_DEBUG_ALL
         BLYNK_LOG2(BLYNK_F("Cmd skipped:"), cmd);

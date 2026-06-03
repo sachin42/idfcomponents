@@ -10,8 +10,8 @@ idf_component_register(
     INCLUDE_DIRS 
         "include"
         "blynk-lib"
-        "blynk-lib/utility"
-        "blynk-lib/Blynk"
+        # "blynk-lib/utility"
+        # "blynk-lib/Blynk"
 
     REQUIRES lwip freertos esp_timer esp_rom print
 )
